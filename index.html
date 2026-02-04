@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Adult Entertainment Platform - 18+ Only">
+  <title>Adult SaaS Platform - 18+</title>
+  <link rel="icon" type="image/svg+xml" href="/vite.svg">
+</head>
+
+<body>
+  <div id="app">
+    <div id="header"></div>
+    <main id="main-content"></main>
+    <div id="footer"></div>
+  </div>
+
+  <!-- Main Logic -->
+  <script>
+    // Data - Movies
+    const movies = [
+      {
+        id: 1,
+        title: 'Romance in Paradise',
+        description: 'เรื่องราวความรักที่เร่าร้อน',
+        category: 'โรแมนติก',
+        thumbnail: 'https://via.placeholder.com/400x250/ff0000/ffffff?text=Movie+1',
+        duration: '45:30',
+        rating: '4.8',
+        views: '125K'
+      },
+      {
+        id: 2,
+        title: 'Midnight Desires',
+        description: 'ความปรารถนาในยามค่ำคืน',
+        category: 'ดราม่า',
+        thumbnail: 'https://via.placeholder.com/400x250/d30000/ffffff?text=Movie+2',
+        duration: '52:15',
+        rating: '4.6',
+        views: '98K'
+      },
+      {
+        id: 3,
+        title: 'Passion Unleashed',
+        description: 'ปลดปล่อยความหลงใหล',
+        category: 'แอ็คชั่น',
+        thumbnail: 'https://via.placeholder.com/400x250/ff3333/ffffff?text=Movie+3',
+        duration: '38:45',
+        rating: '4.9',
+        views: '156K'
+      },
+      {
+        id: 4,
+        title: 'Secret Affairs',
+        description: 'ความลับที่ไม่อาจเปิดเผย',
+        category: 'ระทึกขวัญ',
+        thumbnail: 'https://via.placeholder.com/400x250/cc0000/ffffff?text=Movie+4',
+        duration: '41:20',
+        rating: '4.7',
+        views: '112K'
+      },
+      {
+        id: 5,
+        title: 'Forbidden Love',
+        description: 'ความรักที่ต้องห้าม',
+        category: 'โรแมนติก',
+        thumbnail: 'https://via.placeholder.com/400x250/ff0000/ffffff?text=Movie+5',
+        duration: '48:10',
+        rating: '4.5',
+        views: '89K'
+      },
+      {
+        id: 6,
+        title: 'Temptation Island',
+        description: 'เกาะแห่งการล่อลวง',
+        category: 'ผจญภัย',
+        thumbnail: 'https://via.placeholder.com/400x250/d30000/ffffff?text=Movie+6',
+        duration: '55:30',
+        rating: '4.8',
+        views: '142K'
+      }
+    ];
+
+    const categories = [
+      { id: 1, name: 'โรแมนติก', icon: '💕', count: 245 },
+      { id: 2, name: 'ดราม่า', icon: '🎭', count: 189 },
+      { id: 3, name: 'แอ็คชั่น', icon: '⚡', count: 156 },
+      { id: 4, name: 'ระทึกขวัญ', icon: '🔥', count: 134 },
+      { id: 5, name: 'ผจญภัย', icon: '🌴', count: 98 },
+      { id: 6, name: 'คอมเมดี้', icon: '😄', count: 76 }
+    ];
+
+    const reviews = [
+      {
+        id: 1,
+        movieTitle: 'Romance in Paradise',
+        reviewer: 'User123',
+        rating: 5,
+        comment: 'เนื้อหาดีมาก คุณภาพสูง แนะนำเลยครับ',
+        date: '2026-02-01'
+      },
+      {
+        id: 2,
+        movieTitle: 'Midnight Desires',
+        reviewer: 'MovieFan88',
+        rating: 4,
+        comment: 'ชอบมากค่ะ บรรยากาศดี นักแสดงสวย',
+        date: '2026-02-02'
+      },
+      {
+        id: 3,
+        movieTitle: 'Passion Unleashed',
+        reviewer: 'CinemaLover',
+        rating: 5,
+        comment: 'ยอดเยี่ยมมาก ดูแล้วประทับใจ',
+        date: '2026-02-03'
+      }
+    ];
+
+    const stars = [
+      {
+        id: 1,
+        name: 'Sophia Rose',
+        photo: 'https://via.placeholder.com/300x400/ff0000/ffffff?text=Star+1',
+        movies: 45,
+        rating: '4.9',
+        bio: 'ดาราชื่อดังระดับโลก'
+      },
+      {
+        id: 2,
+        name: 'Emma Diamond',
+        photo: 'https://via.placeholder.com/300x400/d30000/ffffff?text=Star+2',
+        movies: 38,
+        rating: '4.8',
+        bio: 'นักแสดงมากความสามารถ'
+      },
+      {
+        id: 3,
+        name: 'Luna Star',
+        photo: 'https://via.placeholder.com/300x400/ff3333/ffffff?text=Star+3',
+        movies: 52,
+        rating: '4.9',
+        bio: 'ดาราที่ได้รับความนิยมสูงสุด'
+      },
+      {
+        id: 4,
+        name: 'Aria Sky',
+        photo: 'https://via.placeholder.com/300x400/cc0000/ffffff?text=Star+4',
+        movies: 41,
+        rating: '4.7',
+        bio: 'นักแสดงรุ่นใหม่ที่กำลังมาแรง'
+      }
+    ];
+
+    // Components
+    function renderAd(size = 'banner') {
+      const adSizes = {
+        banner: { width: '100%', height: '120px' },
+        square: { width: '300px', height: '300px' },
+        sidebar: { width: '300px', height: '600px' }
+      };
+
+      const { width, height } = adSizes[size] || adSizes.banner;
+
+      return `
+        <div class="ad-container" style="width: ${width}; height: ${height};">
+          <div class="ad-content">
+            <span class="ad-label">โฆษณา</span>
+            <p class="ad-placeholder">พื้นที่โฆษณา ${size}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderMovieCard(movie) {
+      return `
+        <div class="card movie-card">
+          <div class="card-img-wrapper">
+            <img src="${movie.thumbnail}" alt="${movie.title}" class="card-img" loading="lazy">
+            <div class="card-overlay">
+              <span class="badge">${movie.category}</span>
+              <span class="duration">${movie.duration}</span>
+            </div>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">${movie.title}</h3>
+            <p class="card-text">${movie.description}</p>
+            <div class="card-meta">
+              <span class="rating">⭐ ${movie.rating}</span>
+              <span class="views">👁️ ${movie.views}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderHeader() {
+      return `
+        <header class="site-header">
+          <div class="container">
+            <div class="header-content">
+              <div class="logo">
+                <a href="#" data-nav="home">
+                  <span class="logo-icon">🔞</span>
+                  <span class="logo-text">Adult<span class="logo-accent">Hub</span></span>
+                </a>
+              </div>
+              
+              <nav class="main-nav">
+                <a href="#" data-nav="home" class="nav-link">หน้าแรก</a>
+                <a href="#" data-nav="categories" class="nav-link">ประเภทหนัง</a>
+                <a href="#" data-nav="reviews" class="nav-link">รีวิว</a>
+                <a href="#" data-nav="stars" class="nav-link">ดาราสาว</a>
+              </nav>
+              
+              <div class="header-actions">
+                <button class="btn btn-outline btn-sm">เข้าสู่ระบบ</button>
+              </div>
+            </div>
+          </div>
+        </header>
+      `;
+    }
+
+    function renderFooter() {
+      const currentYear = new Date().getFullYear();
+
+      return `
+        <footer class="site-footer">
+          <div class="container">
+            <div class="footer-content">
+              <div class="footer-section">
+                <h3 class="footer-title">Adult<span class="text-accent">Hub</span></h3>
+                <p class="footer-text">แพลตฟอร์มบันเทิงสำหรับผู้ใหญ่ชั้นนำ</p>
+                <p class="footer-warning">⚠️ เนื้อหาสำหรับผู้มีอายุ 18 ปีขึ้นไปเท่านั้น</p>
+              </div>
+              
+              <div class="footer-section">
+                <h4 class="footer-subtitle">เมนูหลัก</h4>
+                <ul class="footer-links">
+                  <li><a href="#" data-nav="home">หน้าแรก</a></li>
+                  <li><a href="#" data-nav="categories">ประเภทหนัง</a></li>
+                  <li><a href="#" data-nav="reviews">รีวิว</a></li>
+                  <li><a href="#" data-nav="stars">ดาราสาว</a></li>
+                </ul>
+              </div>
+              
+              <div class="footer-section">
+                <h4 class="footer-subtitle">ข้อมูล</h4>
+                <ul class="footer-links">
+                  <li><a href="#">เกี่ยวกับเรา</a></li>
+                  <li><a href="#">นโยบายความเป็นส่วนตัว</a></li>
+                  <li><a href="#">เงื่อนไขการใช้งาน</a></li>
+                  <li><a href="#">ติดต่อเรา</a></li>
+                </ul>
+              </div>
+              
+              <div class="footer-section">
+                <h4 class="footer-subtitle">ติดตามเรา</h4>
+                <div class="social-links">
+                  <a href="#" class="social-link">📱 Twitter</a>
+                  <a href="#" class="social-link">📷 Instagram</a>
+                  <a href="#" class="social-link">💬 Discord</a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="footer-bottom">
+              <p>&copy; ${currentYear} AdultHub. All rights reserved.</p>
+              <p class="footer-disclaimer">เว็บไซต์นี้มีเนื้อหาสำหรับผู้ใหญ่ กรุณาใช้ดุลยพินิจในการเข้าชม</p>
+            </div>
+          </div>
+        </footer>
+      `;
+    }
+
+    // Pages
+    function renderHomepage() {
+      const featuredMovies = movies.slice(0, 6);
+      const topCategories = categories.slice(0, 6);
+
+      return `
+        <div class="homepage">
+          <section class="hero">
+            <div class="hero-content">
+              <h1 class="hero-title">ยินดีต้อนรับสู่ <span class="text-accent">AdultHub</span></h1>
+              <p class="hero-subtitle">แพลตฟอร์มบันเทิงสำหรับผู้ใหญ่คุณภาพสูง</p>
+              <div class="hero-actions">
+                <button class="btn btn-primary">เริ่มดูเลย</button>
+                <button class="btn btn-outline">เรียนรู้เพิ่มเติม</button>
+              </div>
+            </div>
+            <div class="hero-bg"></div>
+          </section>
+          
+          ${renderAd('banner')}
+          
+          <section class="section">
+            <div class="container">
+              <div class="section-header">
+                <h2>🔥 หนังแนะนำ</h2>
+                <a href="#" data-nav="categories" class="view-all">ดูทั้งหมด →</a>
+              </div>
+              <div class="grid grid-3">
+                ${featuredMovies.map(movie => renderMovieCard(movie)).join('')}
+              </div>
+            </div>
+          </section>
+          
+          <section class="section categories-section">
+            <div class="container">
+              <h2 class="text-center">📂 ประเภทหนัง</h2>
+              <div class="grid grid-3">
+                ${topCategories.map(cat => `
+                  <div class="category-card">
+                    <span class="category-icon">${cat.icon}</span>
+                    <h3 class="category-name">${cat.name}</h3>
+                    <p class="category-count">${cat.count} เรื่อง</p>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </section>
+          
+          <div class="container">
+            ${renderAd('square')}
+          </div>
+          
+          <section class="section cta-section">
+            <div class="container text-center">
+              <h2>พร้อมเริ่มต้นแล้วหรือยัง?</h2>
+              <p class="cta-text">สมัครสมาชิกวันนี้ รับชมคอนเทนต์พรีเมียมไม่จำกัด</p>
+              <button class="btn btn-primary btn-lg">สมัครสมาชิก</button>
+            </div>
+          </section>
+        </div>
+      `;
+    }
+
+    function renderCategoriesPage() {
+      return `
+        <div class="categories-page">
+          <div class="container">
+            <div class="page-header">
+              <h1>📂 ประเภทหนัง</h1>
+              <p class="page-subtitle">เลือกดูหนังตามหมวดหมู่ที่คุณชื่นชอบ</p>
+            </div>
+            
+            <div class="grid grid-3">
+              ${categories.map(cat => `
+                <div class="category-card-large">
+                  <span class="category-icon-large">${cat.icon}</span>
+                  <div class="category-info">
+                    <h3 class="category-name">${cat.name}</h3>
+                    <p class="category-count">${cat.count} เรื่อง</p>
+                  </div>
+                  <button class="btn btn-outline btn-sm">ดูทั้งหมด</button>
+                </div>
+              `).join('')}
+            </div>
+            
+            <section class="section">
+              <h2>🔥 หนังยอดนิยมในแต่ละหมวด</h2>
+              <div class="grid grid-4">
+                ${movies.map(movie => renderMovieCard(movie)).join('')}
+              </div>
+            </section>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderReviewsPage() {
+      return `
+        <div class="reviews-page">
+          <div class="container">
+            <div class="page-header">
+              <h1>⭐ รีวิวจากผู้ใช้งาน</h1>
+              <p class="page-subtitle">อ่านความคิดเห็นและรีวิวจากสมาชิกของเรา</p>
+            </div>
+            
+            <div class="review-stats">
+              <div class="stat-card">
+                <div class="stat-value">4.8</div>
+                <div class="stat-label">คะแนนเฉลี่ย</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">1,234</div>
+                <div class="stat-label">รีวิวทั้งหมด</div>
+              </div>
+            </div>
+            
+            <div class="reviews-list">
+              ${reviews.map(review => `
+                <div class="review-card">
+                  <div class="review-header">
+                    <h3>${review.reviewer}</h3>
+                    <div>${'⭐'.repeat(review.rating)}</div>
+                  </div>
+                  <h4>${review.movieTitle}</h4>
+                  <p>${review.comment}</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderStarsPage() {
+      return `
+        <div class="stars-page">
+          <div class="container">
+            <div class="page-header">
+              <h1>⭐ ดาราสาว</h1>
+              <p class="page-subtitle">พบกับดาราสาวชื่อดังและผลงานของพวกเธอ</p>
+            </div>
+            
+            <div class="grid grid-4">
+              ${stars.map(star => `
+                <div class="star-card">
+                  <img src="${star.photo}" alt="${star.name}" class="star-photo">
+                  <div class="star-info">
+                    <h3 class="star-name">${star.name}</h3>
+                    <p class="star-bio">${star.bio}</p>
+                    <div class="star-stats">
+                      <span>🎬 ${star.movies} เรื่อง</span>
+                      <span>⭐ ${star.rating}</span>
+                    </div>
+                    <button class="btn btn-primary btn-sm">ดูผลงาน</button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Main App Logic
+    document.addEventListener('DOMContentLoaded', () => {
+      // Setup Styles
+      const styleLink = document.createElement('link');
+      styleLink.rel = 'stylesheet';
+      styleLink.href = 'src/style.css';
+      document.head.appendChild(styleLink);
+
+      // Render Layout
+      document.getElementById('header').innerHTML = renderHeader();
+      document.getElementById('footer').innerHTML = renderFooter();
+
+      // Initial Render
+      navigateTo('home');
+
+      // Setup Navigation
+      document.addEventListener('click', (e) => {
+        // Handle nav links
+        const navLink = e.target.closest('[data-nav]');
+        if (navLink) {
+          e.preventDefault();
+          const page = navLink.getAttribute('data-nav');
+          navigateTo(page);
+        }
+      });
+    });
+
+    function navigateTo(page) {
+      const mainContainer = document.getElementById('main-content');
+
+      switch (page) {
+        case 'home':
+          mainContainer.innerHTML = renderHomepage();
+          break;
+        case 'categories':
+          mainContainer.innerHTML = renderCategoriesPage();
+          break;
+        case 'reviews':
+          mainContainer.innerHTML = renderReviewsPage();
+          break;
+        case 'stars':
+          mainContainer.innerHTML = renderStarsPage();
+          break;
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+
+</html>
